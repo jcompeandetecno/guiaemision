@@ -2,11 +2,11 @@ const questions = [
   { id: 'entrada', type: 'radio', label: '¿Cuál es el formato de entrada principal?', options: ['TXT', 'XML', 'Otro'], help: 'Archivo que recibe el sistema para emitir CFDI.' },
   { id: 'normalizacion', type: 'radio', label: '¿Se requiere normalización de datos?', options: ['Sí', 'No'], help: 'Mapeo/transformación de campos antes del timbrado.' },
   { id: 'correo', type: 'radio', label: '¿Se requiere envío por correo automático?', options: ['Sí', 'No'] },
-  { id: 'archivos', type: 'radio', label: '¿Se requiere almacenamiento/gestión de archivos?', options: ['Sí', 'No'] },
   { id: 'impresion', type: 'radio', label: '¿Se requiere impresión de documentos?', options: ['Sí', 'No'] },
   { id: 'masiva_excel', type: 'radio', label: '¿Habrá emisión masiva a partir de Excel?', options: ['Sí', 'No'] },
   { id: 'complementos', type: 'radio', label: '¿Se requieren complementos fiscales adicionales?', options: ['Sí', 'No'] },
   { id: 'addendas', type: 'radio', label: '¿Se requieren addendas adicionales?', options: ['Sí', 'No'] },
+  { id: 'salida_sftp', type: 'radio', label: '¿El cliente necesita que las facturas (XML/PDF) se guarden automáticamente en una carpeta de salida?', options: ['Sí, en un SFTP de Detecno', 'Sí, en un SFTP del cliente', 'No necesitan carpeta de salida'], help: 'Entrega automática de XML/PDF en carpeta SFTP.' },
   { id: 'usuarios', type: 'number', label: '¿Cuántos usuarios usarán el portal? (aprox.)', placeholder: 'Ej. 5' },
   { id: 'rate_timbrado', type: 'number', label: '¿Qué rate de timbrado aproximado se necesita (CFDIs/mes)?', placeholder: 'Ej. 5000' }
 ];
@@ -71,17 +71,20 @@ function score() {
   const entradaXML = a.entrada === 'XML';
   const entradaTXT = a.entrada === 'TXT';
   const masiva = a.masiva_excel === 'Sí';
-  const storageOrPrint = a.archivos === 'Sí' || a.impresion === 'Sí';
+  const sftpSalida = a.salida_sftp === 'Sí, en un SFTP de Detecno' || a.salida_sftp === 'Sí, en un SFTP del cliente';
+  const requiereImpresion = a.impresion === 'Sí';
+  const storageOrPrint = sftpSalida || requiereImpresion;
   const altoVolumen = (parseInt(a.rate_timbrado || '0', 10) >= 10000) || (parseInt(a.usuarios || '0', 10) >= 25);
 
   if (entradaXML && (needsNormal || needsAddenda)) {
     return { title: 'Emisión Dedicada', desc: 'Requiere XML con normalización/addendas. Ambiente personalizable e integrable con ERP.' };
   }
   if (entradaTXT && masiva && !storageOrPrint) {
-    return { title: 'CFDI Manager Emisión', desc: 'Entrada TXT y carga masiva desde Excel para timbrado ágil, sin impresión/archivo.' };
+    return { title: 'CFDI Manager Emisión', desc: 'Entrada TXT y carga masiva desde Excel para timbrado ágil, sin impresión/carpeta de salida.' };
   }
   if (altoVolumen || storageOrPrint) {
-    return { title: 'Emisión Dedicada', desc: 'Por volumen y/o archivo/impresión, un ambiente dedicado ofrece mejor rendimiento y control.' };
+    const motivo = altoVolumen ? 'alto volumen' : 'necesidad de carpeta SFTP/impresión';
+    return { title: 'Emisión Dedicada', desc: `Por ${motivo}, un ambiente dedicado ofrece mejor rendimiento, control y trazabilidad.` };
   }
   if (entradaTXT && !needsNormal) {
     return { title: 'CFDI Manager Emisión', desc: 'Configuración estándar con entrada TXT sin normalización. Implementación rápida.' };
