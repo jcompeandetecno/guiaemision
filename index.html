@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Asistente de Emisión — Detecno</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Asistente de Emisión</h1>
+      <p class="subtitle">Responde y te sugerimos el ambiente de emisión más adecuado.</p>
+    </header>
+
+    <section id="questionnaire" class="card">
+      <div id="question-container"></div>
+      <div class="actions">
+        <button id="prevBtn" class="btn secondary" disabled>Anterior</button>
+        <button id="nextBtn" class="btn">Siguiente</button>
+      </div>
+    </section>
+
+    <section id="result" class="card hidden">
+      <h2>Resultado sugerido</h2>
+      <div id="result-text"></div>
+      <details class="mt">
+        <summary>Ver resumen de respuestas</summary>
+        <div id="answers-summary"></div>
+      </details>
+      <div class="actions mt">
+        <button id="restartBtn" class="btn secondary">Empezar de nuevo</button>
+      </div>
+    </section>
+
+    <footer>
+      <p>Detecno · Prototipo web ligero (HTML + JS). Puedes alojarlo en Netlify, GitHub Pages o Vercel.</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
