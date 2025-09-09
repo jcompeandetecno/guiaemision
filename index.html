@@ -3,27 +3,32 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Asistente de Emisión — Detecno</title>
+  <title>Asistente de Emisión — Detecno (v5)</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="logo.png" />
 </head>
 <body>
   <main class="container">
-    <header>
-      <h1>Asistente de Emisión</h1>
-      <p class="subtitle">Responde y te sugerimos el ambiente de emisión más adecuado.</p>
+    <header class="header">
+      <img src="logo.png" alt="Detecno" class="logo" />
+      <div class="headings">
+        <h1>Asistente de Emisión</h1>
+        <p class="subtitle">Guía rápida para recomendar el ambiente de emisión adecuado.</p>
+      </div>
     </header>
 
     <section id="questionnaire" class="card">
       <div id="question-container"></div>
       <div class="actions">
         <button id="prevBtn" class="btn secondary" disabled>Anterior</button>
-        <button id="nextBtn" class="btn">Siguiente</button>
+        <button id="nextBtn" class="btn hidden" disabled>Siguiente</button>
       </div>
     </section>
 
     <section id="result" class="card hidden">
       <h2>Resultado sugerido</h2>
       <div id="result-text"></div>
+      <div id="insertion-text" class="mt"></div>
       <details class="mt">
         <summary>Ver resumen de respuestas</summary>
         <div id="answers-summary"></div>
@@ -34,7 +39,7 @@
     </section>
 
     <footer>
-      <p>Detecno · Prototipo web ligero (HTML + JS). Puedes alojarlo en Netlify, GitHub Pages o Vercel.</p>
+      <p>© Detecno · Asistente de Emisión · Este prototipo apoya a preventa/ventas para orientar la solución adecuada (Emisión).</p>
     </footer>
   </main>
 
